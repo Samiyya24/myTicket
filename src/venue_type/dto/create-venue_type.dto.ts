@@ -1,9 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString} from "class-validator";
 
 export class CreateVenueTypeDto {
-  @ApiProperty({ description: "O'tkaziladigan joy nomi" })
-  @IsString()
-  @IsNotEmpty()
+  @ApiProperty({
+    example: "Concert Hall",
+    description: "The name of the venue type",
+  })
   name: string;
 }

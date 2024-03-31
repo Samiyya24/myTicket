@@ -2,33 +2,39 @@ import { Injectable } from "@nestjs/common";
 import { CreateHumanCategoryDto } from "./dto/create-human_category.dto";
 import { UpdateHumanCategoryDto } from "./dto/update-human_category.dto";
 import { InjectModel } from "@nestjs/sequelize";
-import { HumanCategory } from "./models/human_category.models";
+import { HumanCategory } from "./models/human_category.model";
 
 @Injectable()
 export class HumanCategoryService {
   constructor(
-    @InjectModel(HumanCategory) private humancategoryRepo: typeof HumanCategory
+    @InjectModel(HumanCategory) private humanCategoryRepo: typeof HumanCategory
   ) {}
+
   async create(createHumanCategoryDto: CreateHumanCategoryDto) {
-    return this.humancategoryRepo.create(createHumanCategoryDto);
+    return this.humanCategoryRepo.create(createHumanCategoryDto);
   }
 
   async findAll() {
-    return this.humancategoryRepo.findAll({ include: { all: true } });
+    return this.humanCategoryRepo.findAll();
   }
 
   async findOne(id: number) {
-    return this.humancategoryRepo.findByPk(id);
+    return this.humanCategoryRepo.findByPk(id);
   }
 
   async update(id: number, updateHumanCategoryDto: UpdateHumanCategoryDto) {
-    return this.humancategoryRepo.update(updateHumanCategoryDto, {
-      where: { id },
-      returning: true,
-    });
+    const humanCategory = await this.humanCategoryRepo.update(
+      updateHumanCategoryDto,
+      { where: { id }, returning: true }
+    );
+    return humanCategory[1][0];
   }
 
   async remove(id: number) {
-    return this.humancategoryRepo.destroy({ where: { id } });
+    const humanCategoryRows = await this.humanCategoryRepo.destroy({
+      where: { id },
+    });
+    if (humanCategoryRows == 0) return "Not found";
+    return humanCategoryRows;
   }
 }

@@ -1,25 +1,59 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
+import {
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsBoolean,
+} from "class-validator";
 
 export class CreateCustomerCardDto {
+  @ApiProperty({ example: 1, description: "ID of the customer" })
+  @IsInt()
+  @IsNotEmpty()
   customerId: number;
 
-  @ApiProperty({ description: "Mijoz cartasi nomi" }) // swagger
+  @ApiProperty({ example: 1, description: "Name of the card" })
+  @IsInt()
+  @IsNotEmpty()
+  name: number;
+
+  @ApiProperty({
+    example: "+1234567890",
+    description: "Phone number associated with the card",
+  })
   @IsString()
   @IsNotEmpty()
-  name: string;
-  @ApiProperty({ description: "Mijoz cartasiga biriktirilgan telefon nomer" }) // swagger
-  @IsString()
   phone: string;
-  @ApiProperty({ description: "Mijoz cartasi raqami" }) // swagger
+
+  @ApiProperty({ example: "1234 5678 9012 3456", description: "Card number" })
   @IsString()
+  @IsNotEmpty()
   number: string;
-  @ApiProperty({ description: "Mijoz cartasi amal qilish muddati(yil)" }) // swagger
-  @IsString()
-  year: string;
-  @ApiProperty({ description: "Mijoz cartasi amal qilish muddati(oy)" }) // swagger
-  @IsString()
-  month: string;
-  is_active: boolean;
-  is_main: boolean;
+
+  @ApiProperty({ example: 2024, description: "Expiration year of the card" })
+  @IsNumber()
+  @IsNotEmpty()
+  year: number;
+
+  @ApiProperty({ example: 12, description: "Expiration month of the card" })
+  @IsNumber()
+  @IsNotEmpty()
+  month: number;
+
+  @ApiProperty({
+    example: true,
+    description: "Indicates if the card is active",
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  isActive: boolean;
+
+  @ApiProperty({
+    example: true,
+    description: "Indicates if the card is the main card",
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  isMain: boolean;
 }

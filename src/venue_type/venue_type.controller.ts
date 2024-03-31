@@ -16,22 +16,22 @@ export class VenueTypeController {
   constructor(private readonly venueTypeService: VenueTypeService) {}
 
   @Post()
-   async create(@Body() createVenueTypeDto: CreateVenueTypeDto) {
+  async create(@Body() createVenueTypeDto: CreateVenueTypeDto) {
     return this.venueTypeService.create(createVenueTypeDto);
   }
 
   @Get()
-   async findAll() {
+  async findAll() {
     return this.venueTypeService.findAll();
   }
 
   @Get(":id")
-   async findOne(@Param("id") id: string) {
+  async findOne(@Param("id") id: string) {
     return this.venueTypeService.findOne(+id);
   }
 
   @Patch(":id")
-   async update(
+  async update(
     @Param("id") id: string,
     @Body() updateVenueTypeDto: UpdateVenueTypeDto
   ) {
@@ -39,7 +39,7 @@ export class VenueTypeController {
   }
 
   @Delete(":id")
-   async remove(@Param("id") id: string) {
+  async remove(@Param("id") id: string) {
     return this.venueTypeService.remove(+id);
   }
 }

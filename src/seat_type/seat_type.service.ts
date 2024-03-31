@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { CreateSeatTypeDto } from "./dto/create-seat_type.dto";
 import { UpdateSeatTypeDto } from "./dto/update-seat_type.dto";
+import { SeatType } from "./model/seat_type.model";
 import { InjectModel } from "@nestjs/sequelize";
-import { SeatType } from "./models/seat_type.models";
 
 @Injectable()
 export class SeatTypeService {
@@ -13,7 +13,7 @@ export class SeatTypeService {
   }
 
   async findAll() {
-    return this.seatTypeRepo.findAll({ include: { all: true } });
+    return this.seatTypeRepo.findAll();
   }
 
   async findOne(id: number) {
@@ -21,13 +21,16 @@ export class SeatTypeService {
   }
 
   async update(id: number, updateSeatTypeDto: UpdateSeatTypeDto) {
-    return this.seatTypeRepo.update(updateSeatTypeDto, {
+    const seatType = await this.seatTypeRepo.update(updateSeatTypeDto, {
       where: { id },
       returning: true,
     });
+    return seatType;
   }
 
   async remove(id: number) {
-    return this.seatTypeRepo.destroy({ where: { id } });
+    const seatTypeRows = await this.seatTypeRepo.destroy({ where: { id } });
+    if (seatTypeRows == 0) return "Not found";
+    return seatTypeRows;
   }
 }

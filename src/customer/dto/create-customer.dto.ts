@@ -1,35 +1,40 @@
+import {
+  IsString,
+  IsEmail,
+  IsDateString,
+  IsBoolean,
+  IsNumber,
+} from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateCustomerDto {
-  @ApiProperty({ description: "Mijoz ismi" }) // swagger
+  @ApiProperty()
   @IsString()
-  @IsNotEmpty()
-  first_name: string;
-  @ApiProperty({ description: "Mijoz familiyasi" }) // swagger
-  @IsString()
-  last_name: string;
-  @ApiProperty({ description: "Mijoz telefon raqami" }) // swagger
-  @IsNotEmpty()
-  @IsString()
-  phone: string;
-  @ApiProperty({ description: "Mijozni kiritish paroli" }) // swagger
-  @IsString()
-  hashed_password: string;
+  firstName: string;
 
-  @ApiProperty({ description: "Mijozni emaili" }) // swagger
-  @IsNotEmpty()
+  @ApiProperty()
   @IsString()
+  lastName: string;
+
+  @ApiProperty()
+  @IsString()
+  photo: string;
+
+
+  @ApiProperty()
   @IsEmail()
   email: string;
-  @ApiProperty({ description: "Mijozni tugilgan yili" }) // swagger
-  @IsString()
-  birth_date: Date;
-  @ApiProperty({ description: "Mijozni jinsi" }) // swagger
-  @IsString()
-  gender: string;
-  langId: number;
-  @ApiProperty({ description: "Mijozga berilgan tokeni" }) // swagger
-  @IsString()
-  hashed_refresh_token: string;
+
+  @ApiProperty()
+  @IsDateString()
+  birthDay: Date;
+
+  @ApiProperty()
+  @IsBoolean()
+  gender: boolean;
+
+  // @ApiProperty()
+  // @IsString()
+  // hashedRefreshToken: string; // Assuming it's a string, as storing it as a number might cause issues with precision
 }
+

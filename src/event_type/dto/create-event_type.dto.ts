@@ -1,10 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsString, IsInt, MinLength, Min } from "class-validator";
 
 export class CreateEventTypeDto {
-  @ApiProperty({ description: "Tadbir turi" }) // swagger
+  @ApiProperty({ example: "Conference", description: "Name of the event type" })
   @IsString()
-  @IsNotEmpty()
+  @MinLength(1)
   name: string;
-  parent_event_typeId: number;
+
+  @ApiProperty({ example: 2, description: "ID of the parent event type" })
+  @IsInt()
+  @Min(1)
+  parentEventTypeId: number;
 }

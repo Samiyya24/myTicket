@@ -1,30 +1,34 @@
+import { IsInt, IsNotEmpty, IsNumber } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsNumber } from "class-validator";
 
 export class CreateTicketDto {
-  @IsNumber()
+  @ApiProperty({ example: 1, description: "The ID of the event" })
+  @IsInt()
   @IsNotEmpty()
   eventId: number;
 
-  @IsNumber()
+  @ApiProperty({ example: 1, description: "The ID of the seat" })
+  @IsInt()
   @IsNotEmpty()
   seatId: number;
 
-  @ApiProperty({ description: "Bilet narxi" }) // swagger
+  @ApiProperty({ example: 100, description: "The price of the ticket" })
   @IsNumber()
   @IsNotEmpty()
   price: number;
 
-  @ApiProperty({ description: "Xizmat xaqqi" }) // swagger
+  @ApiProperty({ example: 10, description: "The service fee of the ticket" })
   @IsNumber()
   @IsNotEmpty()
-  service_fee: number;
+  serviceFee: number;
 
-  @ApiProperty({ description: "Statusi" }) // swagger
-  @IsNumber()
-  status: number;
+  @ApiProperty({ example: 1, description: "The ID of the status" })
+  @IsInt()
+  @IsNotEmpty()
+  statusId: number;
 
-  @ApiProperty({ description: "Bilet turi" }) // swagger
-  @IsNumber()
-  ticket_type: number;
+  @ApiProperty({ example: 1, description: "The ID of the ticket type" })
+  @IsInt()
+  @IsNotEmpty()
+  ticketTypeId: number;
 }

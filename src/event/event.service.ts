@@ -1,10 +1,12 @@
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
 import { InjectModel } from "@nestjs/sequelize";
-import { Event } from "./models/event.models";
+import { ApiTags, ApiOperation } from "@nestjs/swagger";
+import { Event } from "./model/event.model";
 import { FileService } from "../file/file.service";
 
+@ApiTags("Event")
 @Injectable()
 export class EventService {
   constructor(
@@ -12,28 +14,39 @@ export class EventService {
     private readonly fileService: FileService
   ) {}
 
-  async create(createEventDto: CreateEventDto, image: any) {
-    const fileName = await this.fileService.saveFile(image);
-    const event = this.eventRepo.create({ ...createEventDto, photo:fileName});
+  @ApiOperation({ summary: "Create a new event" })
+  async create(createEventDto: CreateEventDto, photo: any) {
+    console.log(photo);
+
+    const fileName = await this.fileService.saveFile(photo);
+    const event = this.eventRepo.create({ ...createEventDto, photo: fileName });
+
     return event;
   }
 
+  @ApiOperation({ summary: "Retrieve all events" })
   async findAll() {
     return this.eventRepo.findAll({ include: { all: true } });
   }
 
+  @ApiOperation({ summary: "Retrieve an event by ID" })
   async findOne(id: number) {
     return this.eventRepo.findByPk(id);
   }
 
+  @ApiOperation({ summary: "Update an event" })
   async update(id: number, updateEventDto: UpdateEventDto) {
-    return this.eventRepo.update(updateEventDto, {
+    const event = await this.eventRepo.update(updateEventDto, {
       where: { id },
       returning: true,
     });
+    return event[1][0];
   }
 
+  @ApiOperation({ summary: "Remove an event by ID" })
   async remove(id: number) {
-    return this.eventRepo.destroy({ where: { id } });
+    const eventRows = await this.eventRepo.destroy({ where: { id } });
+    if (eventRows == 0) return "Not found";
+    return eventRows;
   }
 }

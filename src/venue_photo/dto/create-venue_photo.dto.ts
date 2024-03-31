@@ -1,14 +1,15 @@
-import { ApiProperty } from "@nestjs/swagger"
-import { IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateVenuePhotoDto {
-  @ApiProperty({ description: "Rasmni url manzili" })
-  @IsString()
-  @IsNotEmpty()
-  url: string;
-
-  @ApiProperty({ description: "venue tableda mavjud id nomeri" })
-  @IsNumber()
-  @IsNotEmpty()
+  @ApiProperty({
+    example: 1,
+    description: "The ID of the venue this photo belongs to",
+  })
   venueId: number;
+
+  @ApiProperty({
+    example: "https://example.com/photo.jpg",
+    description: "The URL of the photo",
+  })
+  url: string;
 }

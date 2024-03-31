@@ -1,41 +1,55 @@
+import { IsInt, IsString } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsNumber, IsString, } from "class-validator";
 
 export class CreateVenueDto {
-  @ApiProperty({ description: "Joy nomi" }) // swagger
+  @ApiProperty({ example: "Venue Name", description: "The name of the venue" })
   @IsString()
-  @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ description: "Manzili" }) // swagger
+  @ApiProperty({
+    example: "Venue Address",
+    description: "The address of the venue",
+  })
   @IsString()
-  @IsNotEmpty()
   address: string;
 
-  @ApiProperty({ description: "Locatsiyasi" }) // swagger
+  @ApiProperty({
+    example: "Venue Location",
+    description: "The location of the venue",
+  })
   @IsString()
   location: string;
 
-  @ApiProperty({ description: "Sayti" }) // swagger
+  @ApiProperty({
+    example: "www.venue.com",
+    description: "The website of the venue",
+  })
   @IsString()
   site: string;
 
-  @ApiProperty({ description: "Telefon raqami" }) // swagger
+  @ApiProperty({
+    example: "123456789",
+    description: "The phone number of the venue",
+  })
   @IsString()
   phone: string;
-  @ApiProperty({ description: "Joylasuv sxemasi 2D,3D ko'rinishida" }) // swagger
+
+  @ApiProperty({ example: 1, description: "The ID of the venue type" })
+  @IsInt()
+  venue_typeId: number;
+
+  @ApiProperty({
+    example: "Venue Schema",
+    description: "The schema of the venue",
+  })
   @IsString()
   schema: string;
 
-  @IsNumber()
-  @IsNotEmpty()
-  venue_typeId: number;
-
-  @IsNumber()
-  @IsNotEmpty()
+  @ApiProperty({ example: 1, description: "The ID of the region" })
+  @IsInt()
   regionId: number;
 
-  @IsNumber()
-  @IsNotEmpty()
+  @ApiProperty({ example: 1, description: "The ID of the district" })
+  @IsInt()
   districtId: number;
 }

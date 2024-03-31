@@ -1,7 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { HumanCategoryService } from './human_category.service';
-import { CreateHumanCategoryDto } from './dto/create-human_category.dto';
-import { UpdateHumanCategoryDto } from './dto/update-human_category.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from "@nestjs/common";
+import { HumanCategoryService } from "./human_category.service";
+import { CreateHumanCategoryDto } from "./dto/create-human_category.dto";
+import { UpdateHumanCategoryDto } from "./dto/update-human_category.dto";
 
 @Controller("human-category")
 export class HumanCategoryController {

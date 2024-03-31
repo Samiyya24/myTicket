@@ -3,60 +3,74 @@ import {
   Get,
   Post,
   Body,
+  Patch,
   Param,
   Delete,
-  Put,
-  HttpCode,
-  HttpStatus,
   UseGuards,
 } from "@nestjs/common";
 import { AdminService } from "./admin.service";
 import { CreateAdminDto } from "./dto/create-admin.dto";
 import { UpdateAdminDto } from "./dto/update-admin.dto";
-import { JwtAdminGuards } from "../guards/admin-guards";
-import { JwtCreatorGuards } from "../guards/creator-guard";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ActivateAdminDto } from "./dto/activate.dto";
+import { CreatorAdminDto } from "./dto/creator.dto";
+import { SelfGuard } from "../guards/creator.guard";
+import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 
+@ApiTags("Districts")
 @Controller("admin")
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
-  @HttpCode(HttpStatus.OK)
-  // @UseGuards(JwtCreatorGuards)
   @Post()
-  async createAdmin(@Body() createAdminDto: CreateAdminDto) {
-    return this.adminService.createAdmin({ createAdminDto });
+  @ApiOperation({ summary: "Create a new Admin" })
+  async create(@Body() createAdminDto: CreateAdminDto) {
+    return this.adminService.create(createAdminDto);
   }
 
-  @HttpCode(HttpStatus.OK)
-  @Post("signIn")
-  async signIn(
-    @Body() updateAdminDto: UpdateAdminDto
-  ): Promise<{ token: string }> {
-    return this.adminService.login(updateAdminDto);
-  }
-
-  // @UseGuards(JwtAdminGuards)
-  @UseGuards(JwtCreatorGuards)
   @Get()
-  async getAdmin() {
-    return this.adminService.getAdmin();
+  @ApiOperation({ summary: "Get all admins" })
+  async findAll() {
+    return this.adminService.findAll();
   }
 
+  @UseGuards(SelfGuard)
+  @UseGuards(JwtAuthGuard)
   @Get(":id")
+  @ApiOperation({ summary: "Get Admin by id" })
   async findOne(@Param("id") id: string) {
-    return this.adminService.getAdminByID(+id);
+    return this.adminService.findOne(+id);
   }
-  @UseGuards(JwtCreatorGuards)
-  @Put(":id")
+
+  @Patch(":id")
+  @ApiOperation({ summary: "Update admin by id" })
   async update(
     @Param("id") id: string,
     @Body() updateAdminDto: UpdateAdminDto
   ) {
-    return this.adminService.updateAdminById(+id, updateAdminDto);
+    return this.adminService.update(+id, updateAdminDto);
   }
-  @UseGuards(JwtCreatorGuards)
+
   @Delete(":id")
+  @ApiOperation({ summary: "Delete admin by id" })
   async remove(@Param("id") id: string) {
-    return this.adminService.deleteAdminById(+id);
+    return this.adminService.remove(+id);
+  }
+
+  @Get(":login")
+  async getAdminByLogin(@Param("login") login: string) {
+    return this.adminService.getAdminByLogin(login);
+  }
+
+  @Post("activate")
+  @ApiOperation({ summary: "Activate Admin" })
+  async avtivateAdmin(@Body() activateAdminDto: ActivateAdminDto) {
+    return this.adminService.activateAdmin(activateAdminDto);
+  }
+
+  @Post("creator")
+  @ApiOperation({ summary: "Activate Admin" })
+  async creatorAdmin(@Body() creatorAdminDto: CreatorAdminDto) {
+    return this.adminService.activateAdmin(creatorAdminDto);
   }
 }

@@ -1,9 +1,9 @@
+import { IsString, MaxLength } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
 
 export class CreateCountryDto {
-     @ApiProperty({ description: "Davlat nomi" }) // swagger
-  @IsString()
-  @IsNotEmpty()
-    country_name:string
+  // @ApiProperty()
+  // @IsString()
+  // @MaxLength(255)
+  name: string;
 }

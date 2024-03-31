@@ -1,31 +1,27 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsInt, IsNotEmpty, IsString, Min } from "class-validator";
 
 export class CreateSeatDto {
-  @ApiProperty({ description: "Joyni joylashgan sektori" }) // swagger
-  @IsNumber()
-  @IsNotEmpty()
+  @IsInt()
+  @Min(1)
   sector: number;
 
-  @ApiProperty({ description: "Qator nomeri" }) // swagger
-  @IsNumber()
-  @IsNotEmpty()
+  @IsInt()
+  @Min(1)
   row_number: number;
 
-  @ApiProperty({ description: "Joy nomeri" }) // swagger
-  @IsNumber()
-  @IsNotEmpty()
+  @IsInt()
+  @Min(1)
   number: number;
 
-  @IsNumber()
+  @IsInt()
   @IsNotEmpty()
   venueId: number;
 
-  @IsNumber()
+  @IsInt()
   @IsNotEmpty()
-  seat_typeId: number;
+  seatTypeId: number;
 
-  @ApiProperty({ description: "Joyni sxema bo'yicha lokatsiyasi" }) // swagger
   @IsString()
-  location_in_schema: string;
+  @IsNotEmpty()
+  locationInSchema: string;
 }

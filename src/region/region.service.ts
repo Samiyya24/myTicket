@@ -1,20 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { CreateRegionDto } from './dto/create-region.dto';
-import { UpdateRegionDto } from './dto/update-region.dto';
-import { InjectModel } from '@nestjs/sequelize';
-import { Region } from './models/region.models';
+import { Injectable } from "@nestjs/common";
+import { CreateRegionDto } from "./dto/create-region.dto";
+import { UpdateRegionDto } from "./dto/update-region.dto";
+import { InjectModel } from "@nestjs/sequelize";
+import { Region } from "./model/region.model";
 
 @Injectable()
 export class RegionService {
+  constructor(@InjectModel(Region) private regionRepo: typeof Region) {}
 
-  constructor(@InjectModel(Region) private regionRepo:typeof Region){}
-
-  async create(createRegionDto: CreateRegionDto): Promise<Region> {
+  async create(createRegionDto: CreateRegionDto) {
     return this.regionRepo.create(createRegionDto);
   }
 
   async findAll() {
-    return this.regionRepo.findAll({include:{all:true}});
+    return this.regionRepo.findAll();
   }
 
   async findOne(id: number) {
@@ -22,9 +21,16 @@ export class RegionService {
   }
 
   async update(id: number, updateRegionDto: UpdateRegionDto) {
-    return this.regionRepo.update(updateRegionDto,{where:{id},returning:true})
+    const region = await this.regionRepo.update(updateRegionDto, {
+      where: { id },
+      returning: true,
+    });
+    return region[1][0];
   }
+
   async remove(id: number) {
-    return this.regionRepo.destroy({where:{id}});
+    const regionRows = await this.regionRepo.destroy({ where: { id } });
+    if (regionRows == 0) return "Not found";
+    return regionRows;
   }
 }

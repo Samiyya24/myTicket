@@ -1,39 +1,90 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsNotEmpty, IsString, isString } from "class-validator";
+import {
+  IsString,
+  IsNotEmpty,
+  IsDateString,
+  IsNumber,
+} from "class-validator";
 
 export class CreateEventDto {
-  @ApiProperty({ description: "Tadbir nomi" }) // swagger
+  @ApiProperty({ example: "Event Name", description: "Name of the event" })
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ description: "Tadbir rasmlari" }) // swagger
+  @ApiProperty({
+    example: "http://example.com/photo.jpg",
+    description: "URL to the event's photo",
+  })
   @IsString()
+  @IsNotEmpty()
   photo: string;
 
-  @ApiProperty({ description: "Tadbir  sanasi" }) // swagger
-  @IsDate()
-  start_date: Date;
+  @ApiProperty({
+    example: "2024-03-24T10:00:00Z",
+    description: "Start date and time of the event",
+  })
+  @IsDateString()
+  @IsNotEmpty()
+  startDate: Date;
 
-  @ApiProperty({ description: "Tadbir boshlanish vaqti" }) // swagger
-  @IsDate()
-  start_time: Date;
-  @ApiProperty({ description: "Tadbir tugash vaqti" }) // swagger
-  @IsDate()
-  finish_date: Date;
-  @ApiProperty({ description: "Tadbir tugash sanasi" }) // swagger
-  @IsDate()
-  finish_time: Date;
+  @ApiProperty({
+    example: 900,
+    description: "Start time of the event in minutes (e.g., 900 for 15:00)",
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  startTime: number;
 
-  @ApiProperty({ description: "Tadbir xaqida batafsil ma'lumot" }) // swagger
+  @ApiProperty({
+    example: "2024-03-24T18:00:00Z",
+    description: "Finish date and time of the event",
+  })
+  @IsDateString()
+  @IsNotEmpty()
+  finishDate: Date;
+
+  @ApiProperty({
+    example: 1200,
+    description: "Finish time of the event in minutes (e.g., 1200 for 20:00)",
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  finishTime: number;
+
+  @ApiProperty({
+    example: "Event information",
+    description: "Additional information about the event",
+  })
   @IsString()
+  @IsNotEmpty()
   info: string;
-  @ApiProperty({ description: "Tadbir tashkil etilgan sana" }) // swagger
-  @IsDate()
-  release_date: Date;
 
-  event_typeId: number;
-  human_categoryId: number;
+  @ApiProperty({ example: 1, description: "ID of the event type" })
+  @IsNumber()
+  @IsNotEmpty()
+  eventTypeId: number;
+
+  @ApiProperty({ example: 1, description: "ID of the human category" })
+  @IsNumber()
+  @IsNotEmpty()
+  humanCategoryId: number;
+
+  @ApiProperty({ example: 1, description: "ID of the venue" })
+  @IsNumber()
+  @IsNotEmpty()
   venueId: number;
+
+  @ApiProperty({ example: 1, description: "ID of the language" })
+  @IsNumber()
+  @IsNotEmpty()
   langId: number;
+
+  @ApiProperty({
+    example: "2024-03-24T00:00:00Z",
+    description: "Release date of the event",
+  })
+  @IsDateString()
+  @IsNotEmpty()
+  releaseDate: Date;
 }

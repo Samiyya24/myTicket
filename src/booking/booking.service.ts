@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { CreateBookingDto } from './dto/create-booking.dto';
-import { UpdateBookingDto } from './dto/update-booking.dto';
-import { InjectModel } from '@nestjs/sequelize';
-import { Booking } from './models.js/booking.models';
+import { Injectable } from "@nestjs/common";
+import { CreateBookingDto } from "./dto/create-booking.dto";
+import { UpdateBookingDto } from "./dto/update-booking.dto";
+import { InjectModel } from "@nestjs/sequelize";
+import { Booking } from "./model/booking.model";
 
 @Injectable()
 export class BookingService {
@@ -21,13 +21,16 @@ export class BookingService {
   }
 
   async update(id: number, updateBookingDto: UpdateBookingDto) {
-    return this.bookingRepo.update(updateBookingDto, {
+    const booking = await this.bookingRepo.update(updateBookingDto, {
       where: { id },
       returning: true,
     });
+    return booking;
   }
 
   async remove(id: number) {
-    return this.bookingRepo.destroy({ where: { id } });
+    const bookingRows = await this.bookingRepo.destroy({ where: { id } });
+    if (bookingRows == 0) return "Not found";
+    return "successfully removed";
   }
 }

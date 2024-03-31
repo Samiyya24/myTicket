@@ -2,39 +2,47 @@ import { Injectable } from "@nestjs/common";
 import { CreateVenuePhotoDto } from "./dto/create-venue_photo.dto";
 import { UpdateVenuePhotoDto } from "./dto/update-venue_photo.dto";
 import { InjectModel } from "@nestjs/sequelize";
-import { VenturePhoto } from "./models/venue_photo.models";
+import { VenuePhoto } from "./models/venue_photo.model";
 import { FileService } from "../file/file.service";
 
 @Injectable()
 export class VenuePhotoService {
   constructor(
-    @InjectModel(VenturePhoto) private venturePhotoRepo: typeof VenturePhoto,  private readonly fileService: FileService
+    @InjectModel(VenuePhoto) private venuePhotoRepo: typeof VenuePhoto,
+    private readonly fileService: FileService
   ) {}
 
-   async create(createVenuePhotoDto: CreateVenuePhotoDto) {
-     const fileName = await this.fileService.saveFile(Image);
-     const venue_photo = this.venturePhotoRepo.create({
-       ...createVenuePhotoDto,
-       url: fileName,
-     });
-     return venue_photo;
-   }
-   async findAll() {
-    return this.venturePhotoRepo.findAll({include:{all:true}});
+  async create(createVenuePhotoDto: CreateVenuePhotoDto, photo: any) {
+    console.log("photo", photo);
+
+    const fileName = await this.fileService.saveFile(photo);
+    const event = this.venuePhotoRepo.create({
+      ...createVenuePhotoDto,
+      url: fileName,
+    });
+
+    return event;
   }
 
-   async findOne(id: number) {
-    return this.venturePhotoRepo.findByPk(id);
+  async findAll() {
+    return this.venuePhotoRepo.findAll({ include: { all: true } });
   }
 
-   async update(id: number, updateVenuePhotoDto: UpdateVenuePhotoDto) {
-    return this.venturePhotoRepo.update(updateVenuePhotoDto, {
+  async findOne(id: number) {
+    return this.venuePhotoRepo.findByPk(id);
+  }
+
+  async update(id: number, updateVenuePhotoDto: UpdateVenuePhotoDto) {
+    const venuePhoto = await this.venuePhotoRepo.update(updateVenuePhotoDto, {
       where: { id },
       returning: true,
     });
+    return venuePhoto[1][0];
   }
 
-   async remove(id: number) {
-    return this.venturePhotoRepo.destroy({where:{id}});
+  async remove(id: number) {
+    const venuePhotoRows = await this.venuePhotoRepo.destroy({ where: { id } });
+    if (venuePhotoRows == 0) return "Not found";
+    return venuePhotoRows;
   }
 }

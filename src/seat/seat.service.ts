@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { CreateSeatDto } from "./dto/create-seat.dto";
 import { UpdateSeatDto } from "./dto/update-seat.dto";
 import { InjectModel } from "@nestjs/sequelize";
-import { Seat } from "./models/seat.models";
+import { Seat } from "./model/seat.model";
 
 @Injectable()
 export class SeatService {
@@ -21,13 +21,18 @@ export class SeatService {
   }
 
   async update(id: number, updateSeatDto: UpdateSeatDto) {
-    return this.seatRepo.update(updateSeatDto, {
+    const seat = await this.seatRepo.update(updateSeatDto, {
       where: { id },
       returning: true,
     });
+    return seat[1][0];
   }
 
   async remove(id: number) {
-    return this.seatRepo.destroy({ where: { id } });
+    const seatRows = await this.seatRepo.destroy({ where: { id } });
+    if (seatRows == 0) {
+      return "Not found";
+    }
+    return seatRows;
   }
 }

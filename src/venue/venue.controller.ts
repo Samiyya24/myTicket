@@ -17,27 +17,29 @@ export class VenueController {
 
   @Post()
   async create(@Body() createVenueDto: CreateVenueDto) {
-    return this.venueService.createVenue(createVenueDto);
+    return this.venueService.create(createVenueDto);
   }
 
-  
   @Get()
-   async findAll() {
-    return this.venueService.findAll();
+  async findAll() {
+    return this.venueService.findAll(); 
   }
 
   @Get(":id")
-   async findOne(@Param("id") id: string) {
+  async findOne(@Param("id") id: string) {
     return this.venueService.findOne(+id);
   }
 
   @Patch(":id")
-   async update(@Param("id") id: string, @Body() updateVenueDto: UpdateVenueDto) {
+  async update(
+    @Param("id") id: string,
+    @Body() updateVenueDto: UpdateVenueDto
+  ) {
     return this.venueService.update(+id, updateVenueDto);
   }
 
   @Delete(":id")
-   async remove(@Param("id") id: string) {
+  async remove(@Param("id") id: string) {
     return this.venueService.remove(+id);
   }
 }

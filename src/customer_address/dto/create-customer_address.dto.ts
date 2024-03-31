@@ -1,33 +1,72 @@
+import {
+  IsNumber,
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsInt,
+  MinLength,
+  MaxLength,
+} from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
 
 export class CreateCustomerAddressDto {
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
   customerId: number;
 
-  @ApiProperty({ description: "Mijoz yashash manzili" }) // swagger
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
+  @MaxLength(255)
   name: string;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
   countryId: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
   regionId: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
   districtId: number;
 
-  @ApiProperty({ description: "Mijoz ko'cha nomi" }) // swagger
+  @ApiProperty()
   @IsString()
+  @IsNotEmpty()
+  @MaxLength(255)
   street: string;
-  @ApiProperty({ description: "Mijoz uy raqami" }) // swagger
-  @IsString()
-  house: string;
-  @ApiProperty({ description: "Mijoz kvartira raqami" }) // swagger
-  @IsString()
-  flat: string;
-  @ApiProperty({ description: "Mijoz uy manzili lokatsiyasi" }) // swagger
-  @IsString()
-  location: string;
-  @IsString()
-  post_index: string;
 
-  @ApiProperty({ description: "Qo'shimcha ma'lumotlari" }) // swagger
+  @ApiProperty()
   @IsString()
+  @IsNotEmpty()
+  @MaxLength(255)
+  house: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsInt()
+  flat: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  @MaxLength(255)
+  location: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsInt()
+  postIndex: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  @MaxLength(500)
   info: string;
 }
